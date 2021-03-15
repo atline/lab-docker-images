@@ -8,6 +8,7 @@ ENV LANG C
 
 COPY ["lava-coordinator.conf", "/etc/lava-coordinator/lava-coordinator.conf"]
 COPY ["customized.sh", "/root/entrypoint.d/"]
+COPY ["patch", "/usr/lib/python3/dist-packages/"]
 
 RUN sed -i 's/^.*upgrade/#&/g' /usr/bin/lxc-create;\
 sed -i '/containers/{n;s/^.*/#&/g;}' /etc/init.d/udev;\
