@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <identity> <role>"
+    exit 1
+fi
+
+identity=$1
+role=$2
+job_id=`lava-group $role`
+
+lavacli -i $identity jobs wait --polling 60 $job_id
