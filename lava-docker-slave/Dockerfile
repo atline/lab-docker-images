@@ -10,8 +10,7 @@ COPY ["lava-coordinator.conf", "/etc/lava-coordinator/lava-coordinator.conf"]
 COPY ["customized.sh", "/root/entrypoint.d/"]
 COPY ["patch", "/usr/lib/python3/dist-packages/"]
 
-RUN sed -i 's/^.*upgrade/#&/g' /usr/bin/lxc-create;\
-sed -i '/containers/{n;s/^.*/#&/g;}' /etc/init.d/udev;\
+RUN sed -i '/containers/{n;s/^.*/#&/g;}' /etc/init.d/udev;\
 sed -i 's/^\s\s*warn_if_interactive/:/g' /etc/init.d/udev;\
 sed -i '/\/etc\/lava-dispatcher\/lava-worker/i\set +e\ngrep "export http_proxy=\$http_proxy" /etc/lava-dispatcher/lava-worker\nrc=$?\nset -e\nif [ $rc -ne 0 ]; then\necho "export http_proxy=\$http_proxy" >> /etc/lava-dispatcher/lava-worker\nfi\nsed -i "s/\\"coordinator_hostname\\": .*/\\"coordinator_hostname\\": \\"$master\\"/g" /etc/lava-coordinator/lava-coordinator.conf' /root/entrypoint.sh;\
 sed -i '/\/usr\/bin\/lava-slave/i\service udev start\nservice ser2net start' /root/entrypoint.sh;\
