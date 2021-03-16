@@ -36,6 +36,17 @@ function get_timezone()
         awk -F '/usr/share/zoneinfo/' '{print $2}' | tail -1)
 }
 
+# start
+declare CFG_DIR=~/.config/lava_docker_slave
+mkdir -p $CFG_DIR
+cat > $CFG_DIR/advanced.json.sample<< EOF
+{
+    "volume": ["/host_folder_1:/container_folder_1", "/host_folder_2:/container_folder_2"],
+    "no_proxy": ".sw.nxp.com,.freescale.net,10.0.0.0/8",
+    "force_update": "true"
+}
+EOF
+
 # get options
 set +e
 parsed_args=$(getopt -o a:p:n:v:x:m: -n "$(basename "$0")" -- "$@")
@@ -95,16 +106,14 @@ worker_name="--name $prefix-$(hostname)-docker-$name"
 url="http://$master/"
 container_name=$prefix-$(hostname)-docker-$name
 
-declare CUR_DIR="$(cd "$(dirname "$0")"; pwd -P)"
-
 get_timezone
 
 # parse advanced configure
 volume_string=""
 no_proxy=".sw.nxp.com,.freescale.net,10.0.0.0/8"
 force_update="false"
-if [ -f $CUR_DIR/advanced.json ]; then
-    volume=$(candidate=$(cat $CUR_DIR/advanced.json) \
+if [ -f $CFG_DIR/advanced.json ]; then
+    volume=$(candidate=$(cat $CFG_DIR/advanced.json) \
         docker run --rm -e candidate endeveit/docker-jq \
         sh -c 'echo "$candidate" | jq -r ". | select(.volume != null) | .volume[]"')
 
@@ -113,12 +122,12 @@ if [ -f $CUR_DIR/advanced.json ]; then
         volume_string="$volume_string -v $per_volume"
     done
 
-    no_proxy_candidate=$(candidate=$(cat $CUR_DIR/advanced.json) \
+    no_proxy_candidate=$(candidate=$(cat $CFG_DIR/advanced.json) \
         docker run --rm -e candidate endeveit/docker-jq \
         sh -c 'echo "$candidate" | jq -r ". | select(.no_proxy != null) | .no_proxy"')
     no_proxy=${no_proxy_candidate:-$no_proxy}
 
-    force_update_candidate=$(candidate=$(cat $CUR_DIR/advanced.json) \
+    force_update_candidate=$(candidate=$(cat $CFG_DIR/advanced.json) \
         docker run --rm -e candidate endeveit/docker-jq \
         sh -c 'echo "$candidate" | jq -r ". | select(.force_update != null) | .force_update"')
     force_update=${force_update_candidate:-$force_update}
