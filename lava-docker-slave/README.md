@@ -61,7 +61,7 @@ The slave script (`lava_docker_slave`) could be executed with root permission or
         build:   can skip this if want to use prebuilt customized docker image on dockerhub
                  lava_docker_slave -a build -v 2021.03 -x http://apac.nics.nxp.com:8080
         start:   new/start a lava docker slave
-                 lava_docker_slave -a start -p shanghai -n apple -v 2021.03 -x http://apac.nics.nxp.com:8080 -m 10.192.225.2
+                 lava_docker_slave -a start -p shanghai -n apple -v 2021.03 -x http://apac.nics.nxp.com:8080 -m lava.sw.nxp.com
         stop:    stop a lava docker slave
                  lava_docker_slave -a stop -p shanghai -n apple
         destroy: destroy a lava docker slave
