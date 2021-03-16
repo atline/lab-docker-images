@@ -22,5 +22,5 @@ setup(
             'lava_docker_slave = nxp_ls:main',
         ]
     },
-    data_files=[('/'+name, ['lava_docker_slave.sh'])],
+    data_files=[('/'+name, ['lava_docker_slave'])],
 )

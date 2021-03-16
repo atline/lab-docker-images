@@ -43,29 +43,29 @@ To use docker solution to manage a customized lava lab, we do some extension bas
 
 ## Slave Control Script
 
-The slave script (`lava_docker_slave.sh`) could be executed with root permission or use `sudo usermod -aG docker $USER` to grants privileges to current user. You can use `./lava_docker_slave.sh` to get the usage of this install script, similar to next:
+The slave script (`lava_docker_slave`) could be executed with root permission or use `sudo usermod -aG docker $USER` to grants privileges to current user. You can use `lava_docker_slave` to get the usage of this install script, similar to next:
 
     NAME
-        lava_docker_slave.sh - lava docker slave install script
+        lava_docker_slave - lava docker slave install script
     SYNOPSIS
-        lava_docker_slave.sh -a <action> -p <prefix> -n <name> -v <version> -x <proxy> -m <master>
+        lava_docker_slave -a <action> -p <prefix> -n <name> -v <version> -x <proxy> -m <master>
     DESCRIPTION
         -a:     specify action of this script
         -p:     prefix of worker name, fill in site please
         -n:     unique name for user to distinguish other worker
-        -v:     version of lava dispatcher, e.g. 2020.08, etc
+        -v:     version of lava dispatcher, e.g. 2021.03, etc
         -x:     local http proxy, e.g. http://apac.nics.nxp.com, http://emea.nics.nxp.com:8080, http://amec.nics.nxp.com:8080
         -m:     the master this slave will connect to
 
         Example:
         build:   can skip this if want to use prebuilt customized docker image on dockerhub
-                 ./lava_docker_slave.sh -a build -v 2020.08 -x http://apac.nics.nxp.com:8080
+                 lava_docker_slave -a build -v 2021.03 -x http://apac.nics.nxp.com:8080
         start:   new/start a lava docker slave
-                 ./lava_docker_slave.sh -a start -p shanghai -n apple -v 2020.08 -x http://apac.nics.nxp.com:8080 -m 10.192.225.2
+                 lava_docker_slave -a start -p shanghai -n apple -v 2021.03 -x http://apac.nics.nxp.com:8080 -m 10.192.225.2
         stop:    stop a lava docker slave
-                 ./lava_docker_slave.sh -a stop -p shanghai -n apple
+                 lava_docker_slave -a stop -p shanghai -n apple
         destroy: destroy a lava docker slave
-                 ./lava_docker_slave.sh -a destroy -p shanghai -n apple
+                 lava_docker_slave -a destroy -p shanghai -n apple
         (Here, if docker host name is shubuntu1, then lava worker name will be shanghai-shubuntu1-docker-apple)
 
 ### About advanced.json:
