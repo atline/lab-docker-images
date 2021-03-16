@@ -43,6 +43,12 @@ To use docker solution to manage a customized lava lab, we do some extension bas
 
 ## Slave Control Script
 
+### Install:
+
+    pip install -UI nxp_lite_tools[ls]
+
+### Usage:
+
 The slave script (`lava_docker_slave`) could be executed with root permission or use `sudo usermod -aG docker $USER` to grants privileges to current user. You can use `lava_docker_slave` to get the usage of this install script, similar to next:
 
     NAME
