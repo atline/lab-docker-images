@@ -20,6 +20,8 @@ apt-get install -y nfs-kernel-server rpcbind --no-install-recommends;\
 apt-get install -y python3-pip --no-install-recommends;\
 apt-get install -y lavacli;\
 apt-get install -y vim wget --no-install-recommends;\
+apt-get install -y openjdk-11-jre-headless --no-install-recommends;\
+apt-get install -y libnet-telnet-perl --no-install-recommends;\
 rm -rf /var/lib/apt/lists/*;\
 pip3 install pyserial;\
 lava-dispatcher-host rules install;\
