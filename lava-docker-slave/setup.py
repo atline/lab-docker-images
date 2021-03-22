@@ -1,17 +1,15 @@
 import os
-import sys
-from distutils.sysconfig import get_python_lib
 from setuptools import setup, find_packages
+from shutil import copy
 
 
-name="nxp_ls"
-relative_site_packages = get_python_lib().split(sys.prefix + os.sep)[1]
-data_files_relative_path = os.path.join(relative_site_packages, name)
-
+name = "nxp_ls"
+script = "lava_docker_slave"
+copy(script, name)
 
 setup(
     name=name,
-    version="1.1.0",
+    version="1.1.1",
     author="Larry Shen",
     author_email="larry.shen@nxp.com",
     license="MIT",
@@ -30,5 +28,8 @@ setup(
             'lava_docker_slave = nxp_ls:main',
         ]
     },
-    data_files=[(data_files_relative_path, ['lava_docker_slave'])],
+
+    package_data={'': [script]},
 )
+
+os.remove(os.path.join(name, script))
