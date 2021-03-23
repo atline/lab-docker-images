@@ -3,3 +3,4 @@ service ser2net start
 service tftpd-hpa start
 rpcbind
 service nfs-kernel-server start
+update-ca-certificates

@@ -240,6 +240,7 @@ case "$action" in
                 -v ~/.config/lavacli.yaml:/root/.config/lavacli.yaml \
                 -v ~/.lava/"$container_name"/ser2net.conf:/etc/ser2net.conf \
                 -v /sys/fs/cgroup:/sys/fs/cgroup \
+                -v /usr/local/share/ca-certificates:/usr/local/share/ca-certificates \
                 $volume_string \
                 -e WORKER_NAME="$worker_name" \
                 -e URL="$url" \
