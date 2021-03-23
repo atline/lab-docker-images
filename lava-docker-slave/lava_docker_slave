@@ -11,6 +11,7 @@ DESCRIPTION
         -a:     specify action of this script
         -p:     prefix of worker name, fill in site please
         -n:     unique name for user to distinguish other worker
+        -f:     full name specified, user need to assure it's unique, -n will be skip if -f specified
         -v:     version of lava dispatcher, e.g. 2021.03, etc
         -x:     local http proxy, e.g. http://apac.nics.nxp.com, http://emea.nics.nxp.com:8080, http://amec.nics.nxp.com:8080
         -m:     the master this slave will connect to
@@ -49,7 +50,7 @@ EOF
 
 # get options
 set +e
-parsed_args=$(getopt -o a:p:n:v:x:m: -n "$(basename "$0")" -- "$@")
+parsed_args=$(getopt -o a:p:n:f:v:x:m: -n "$(basename "$0")" -- "$@")
 rc=$?
 set -e
 if [ 0 -ne $rc ]; then
@@ -78,6 +79,10 @@ do
             name=$2
             shift 2
             ;;
+        -f)
+            full=$2
+            shift 2
+            ;;
         -v)
             version=$2
             shift 2
@@ -102,11 +107,16 @@ do
 done
 
 http_proxy=$proxy
-worker_name="--name $prefix-$(hostname)-docker-$name"
 url=$master
 master=${master#*://}
 master=${master%%/*}
-container_name=$prefix-$(hostname)-docker-$name
+if [ $full ]; then
+    worker_name="--name $full"
+    container_name=$full
+elif [ $name ]; then
+    worker_name="--name $prefix-$(hostname)-docker-$name"
+    container_name=$prefix-$(hostname)-docker-$name
+fi
 
 get_timezone
 
@@ -152,8 +162,8 @@ case "$action" in
         ;;
 
     start)
-        if [[ ! $prefix || ! $name || ! $version || ! $proxy || ! $master ]]; then
-            echo "Fatal: -p, -n, -v, -x, -m required for start!"
+        if [[ ! $prefix || ! $worker_name || ! $version || ! $proxy || ! $master ]]; then
+            echo "Fatal: -p, -n/-f, -v, -x, -m required for start!"
             usage
             exit 1
         fi
@@ -244,8 +254,8 @@ case "$action" in
         ;;
 
     stop)
-        if [[ ! $prefix || ! $name ]]; then
-            echo "Fatal: -p, -n required for stop!"
+        if [[ ! $prefix || ! $worker_name ]]; then
+            echo "Fatal: -p, -n/-f required for stop!"
             usage
             exit 1
         fi
@@ -259,8 +269,8 @@ case "$action" in
         ;;
 
     destroy)
-        if [[ ! $prefix || ! $name ]]; then
-            echo "Fatal: -p, -n required for destroy!"
+        if [[ ! $prefix || ! $worker_name ]]; then
+            echo "Fatal: -p, -n/-f required for destroy!"
             usage
             exit 1
         fi
