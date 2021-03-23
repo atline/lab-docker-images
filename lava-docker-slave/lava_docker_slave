@@ -20,12 +20,12 @@ DESCRIPTION
         build:   can skip this if want to use prebuilt customized docker image on dockerhub
                  $(basename "$0") -a build -v 2021.03 -x http://apac.nics.nxp.com:8080
         start:   new/start a lava docker slave
-                 $(basename "$0") -a start -p shanghai -n apple -v 2021.03 -x http://apac.nics.nxp.com:8080 -m lava.sw.nxp.com
+                 $(basename "$0") -a start -p shanghai -n apple -v 2021.03 -x http://apac.nics.nxp.com:8080 -m https://lava.sw.nxp.com/
         stop:    stop a lava docker slave
                  $(basename "$0") -a stop -p shanghai -n apple
         destroy: destroy a lava docker slave
                  $(basename "$0") -a destroy -p shanghai -n apple
-        (Here, if docker host name is shubuntu1, then lava worker name will be shanghai-shubuntu1-docker-apple)
+        (Here, if docker host name is shubuntu1, then lava worker name will be shanghai-shubuntu1-docker-apple; if -f specified, will use user specified full name instead)
 HELPDOC
 }
 

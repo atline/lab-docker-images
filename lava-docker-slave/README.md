@@ -59,6 +59,7 @@ The slave script (`lava_docker_slave`) could be executed with root permission or
         -a:     specify action of this script
         -p:     prefix of worker name, fill in site please
         -n:     unique name for user to distinguish other worker
+        -f:     full name specified, user need to assure it's unique, -n will be skip if -f specified
         -v:     version of lava dispatcher, e.g. 2021.03, etc
         -x:     local http proxy, e.g. http://apac.nics.nxp.com, http://emea.nics.nxp.com:8080, http://amec.nics.nxp.com:8080
         -m:     the master this slave will connect to
@@ -67,16 +68,16 @@ The slave script (`lava_docker_slave`) could be executed with root permission or
         build:   can skip this if want to use prebuilt customized docker image on dockerhub
                  lava_docker_slave -a build -v 2021.03 -x http://apac.nics.nxp.com:8080
         start:   new/start a lava docker slave
-                 lava_docker_slave -a start -p shanghai -n apple -v 2021.03 -x http://apac.nics.nxp.com:8080 -m lava.sw.nxp.com
+                 lava_docker_slave -a start -p shanghai -n apple -v 2021.03 -x http://apac.nics.nxp.com:8080 -m https://lava.sw.nxp.com/
         stop:    stop a lava docker slave
                  lava_docker_slave -a stop -p shanghai -n apple
         destroy: destroy a lava docker slave
                  lava_docker_slave -a destroy -p shanghai -n apple
-        (Here, if docker host name is shubuntu1, then lava worker name will be shanghai-shubuntu1-docker-apple)
+        (Here, if docker host name is shubuntu1, then lava worker name will be shanghai-shubuntu1-docker-apple; if -f specified, will use user specified full name instead)
 
 ### About advanced.json:
 
-You can define some additional control parameters in `advanced.json` before new a container, this afford you some advanced ability to configure container.
+You can define some additional control parameters in `~/.config/lava_docker_slave/advanced.json` before new a container, this afford you some advanced ability to configure container.
 
 Some parameters' format as follows:
 
