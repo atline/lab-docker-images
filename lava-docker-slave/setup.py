@@ -6,14 +6,11 @@ from shutil import copy
 name = "nxp_ls"
 script = "lava_docker_slave"
 
-try:
-    copy(script, name)
-except:
-    pass
+copy(script, name)
 
 setup(
     name=name,
-    version="1.1.4",
+    version="1.1.5",
     author="Larry Shen",
     author_email="larry.shen@nxp.com",
     license="MIT",
@@ -34,4 +31,7 @@ setup(
     },
 
     package_data={'': [script]},
+    include_package_data = True,
 )
+
+os.remove(os.path.join(name, script))
