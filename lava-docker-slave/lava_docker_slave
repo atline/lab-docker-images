@@ -103,7 +103,9 @@ done
 
 http_proxy=$proxy
 worker_name="--name $prefix-$(hostname)-docker-$name"
-url="http://$master/"
+url=$master
+master=${master#*://}
+master=${master%%/*}
 container_name=$prefix-$(hostname)-docker-$name
 
 get_timezone
