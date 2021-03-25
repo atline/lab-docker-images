@@ -113,7 +113,7 @@ master=${master%%/*}
 if [ $full ]; then
     worker_name="--name $full"
     container_name=$full
-elif [ $name ]; then
+elif [ $prefix ] && [ $name ]; then
     worker_name="--name $prefix-$(hostname)-docker-$name"
     container_name=$prefix-$(hostname)-docker-$name
 fi
@@ -162,7 +162,7 @@ case "$action" in
         ;;
 
     start)
-        if [[ ! $prefix || ! $worker_name || ! $version || ! $proxy || ! $master ]]; then
+        if [[ ! $worker_name || ! $version || ! $proxy || ! $master ]]; then
             echo "Fatal: -p, -n/-f, -v, -x, -m required for start!"
             usage
             exit 1
@@ -255,7 +255,7 @@ case "$action" in
         ;;
 
     stop)
-        if [[ ! $prefix || ! $worker_name ]]; then
+        if [[ ! $worker_name ]]; then
             echo "Fatal: -p, -n/-f required for stop!"
             usage
             exit 1
@@ -270,7 +270,7 @@ case "$action" in
         ;;
 
     destroy)
-        if [[ ! $prefix || ! $worker_name ]]; then
+        if [[ ! $worker_name ]]; then
             echo "Fatal: -p, -n/-f required for destroy!"
             usage
             exit 1
