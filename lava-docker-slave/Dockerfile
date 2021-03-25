@@ -12,7 +12,6 @@ COPY ["patch", "/usr/lib/python3/dist-packages/"]
 
 RUN sed -i '/containers/{n;s/^.*/#&/g;}' /etc/init.d/udev;\
 sed -i 's/^\s\s*warn_if_interactive/:/g' /etc/init.d/udev;\
-sed -i '/\/etc\/lava-dispatcher\/lava-worker/i\set +e\ngrep "export http_proxy=\$http_proxy" /etc/lava-dispatcher/lava-worker\nrc=$?\nset -e\nif [ $rc -ne 0 ]; then\necho "export http_proxy=\$http_proxy" >> /etc/lava-dispatcher/lava-worker\nfi\nsed -i "s/\\"coordinator_hostname\\": .*/\\"coordinator_hostname\\": \\"$master\\"/g" /etc/lava-coordinator/lava-coordinator.conf' /root/entrypoint.sh;\
 sed -i '/killproc -p/a\rm -f \$PIDFILE || true' /etc/init.d/ser2net;\
 apt-get update;\
 apt-get install -y nfs-kernel-server rpcbind --no-install-recommends;\
