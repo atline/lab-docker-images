@@ -117,7 +117,7 @@ done
 http_proxy=$proxy
 url=$master
 ws_url=${url%*/}
-ws_url=$ws_url":8001/ws/"
+ws_url="--ws-url $ws_url:8001/ws/"
 master=${master#*://}
 master=${master%%/*}
 if [ $full ]; then
