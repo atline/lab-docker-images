@@ -55,6 +55,7 @@ The slave script (`lava_docker_slave`) could be executed with root permission or
         lava_docker_slave - lava docker slave install script
     SYNOPSIS
         lava_docker_slave -a <action> -p <prefix> -n <name> -v <version> -x <proxy> -m <master>
+        lava_docker_slave -a <action> -f <full_name> -v <version> -x <proxy> -m <master>
     DESCRIPTION
         -a:     specify action of this script
         -p:     prefix of worker name, fill in site please

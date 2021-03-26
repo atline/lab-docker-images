@@ -7,6 +7,7 @@ NAME
         $(basename "$0") - lava docker slave install script
 SYNOPSIS
         $(basename "$0") -a <action> -p <prefix> -n <name> -v <version> -x <proxy> -m <master>
+        $(basename "$0") -a <action> -f <full_name> -v <version> -x <proxy> -m <master>
 DESCRIPTION
         -a:     specify action of this script
         -p:     prefix of worker name, fill in site please
