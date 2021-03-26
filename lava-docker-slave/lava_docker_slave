@@ -37,6 +37,13 @@ function get_timezone()
         awk -F '/usr/share/zoneinfo/' '{print $2}' | tail -1)
 }
 
+# switch to correct token if needed
+function switch_token()
+{
+    docker run --rm -v $1:/tmp/worker busybox \
+        sh -c "rm -f /tmp/worker/token; cp -f /tmp/worker/token.$2 /tmp/worker/token > /dev/null 2>&1" || :
+}
+
 # start
 declare CFG_DIR=~/.config/lava_docker_slave
 mkdir -p $CFG_DIR
@@ -168,6 +175,8 @@ case "$action" in
             exit 1
         fi
 
+        switch_token $container_name $master
+
         set +e
         status=$(docker inspect --format '{{ .State.Status }}' "$container_name" 2>&1)
         rc=$?
@@ -251,6 +260,26 @@ case "$action" in
                 --name "$container_name" \
                 --hostname "$container_name" \
                 "$target_image"
+
+            cnt=0
+            while :
+            do
+                set +e
+                docker exec $container_name test -e /var/lib/lava/dispatcher/worker/token > /dev/null 2>&1
+                if [ $? -eq 0 ]; then
+                    break
+                fi
+                set -e
+                cnt=$((cnt+1))
+                if [ $cnt -eq 120 ]; then
+                    echo "Failure when connect to lava server."
+                    docker rm -f $container_name
+                    exit 1
+                fi
+                sleep 2
+            done
+
+            docker exec $container_name cp -f /var/lib/lava/dispatcher/worker/token{,.$master}
         fi
         ;;
 
