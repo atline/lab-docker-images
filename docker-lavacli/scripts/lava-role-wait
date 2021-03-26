@@ -9,4 +9,6 @@ identity=$1
 role=$2
 job_id=`lava-group $role`
 
+update-ca-certificates
+
 lavacli -i $identity jobs wait --polling 60 $job_id
