@@ -10,7 +10,7 @@ copy(script, name)
 
 setup(
     name=name,
-    version="1.2.6",
+    version="1.2.7",
     author="Larry Shen",
     author_email="larry.shen@nxp.com",
     license="MIT",
