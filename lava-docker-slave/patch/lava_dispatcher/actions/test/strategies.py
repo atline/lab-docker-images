@@ -27,5 +27,5 @@ from lava_dispatcher.actions.test.shell import TestShell
 from lava_dispatcher.actions.test.multinode import MultinodeTestShell
 from lava_dispatcher.actions.test.monitor import TestMonitor
 from lava_dispatcher.actions.test.interactive import TestInteractive
-from lava_dispatcher.actions.test.docker import DockerTestShell
+from lava_dispatcher.actions.test.docker import DockerTest
 from lava_dispatcher.actions.test.reset_shell import ResetTestShell
