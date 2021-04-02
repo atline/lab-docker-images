@@ -262,22 +262,27 @@ case "$action" in
                 --hostname "$container_name" \
                 "$target_image"
 
+            echo -e "Communicate with lava server ongoing.\c"
             cnt=0
             while :
             do
                 set +e
                 docker exec $container_name test -e /var/lib/lava/dispatcher/worker/token > /dev/null 2>&1
                 if [ $? -eq 0 ]; then
+                    echo
                     break
                 fi
                 set -e
                 cnt=$((cnt+1))
-                if [ $cnt -eq 120 ]; then
+                if [ $cnt -eq 60 ]; then
+                    echo
                     echo "Failure when connect to lava server."
-                    docker rm -f $container_name
+                    docker logs $container_name > $CFG_DIR/fatal.log 2>&1
+                    docker rm -f $container_name > /dev/null 2>&1
                     exit 1
                 fi
                 sleep 2
+                echo -e ".\c"
             done
 
             docker exec $container_name cp -f /var/lib/lava/dispatcher/worker/token{,.$master}
