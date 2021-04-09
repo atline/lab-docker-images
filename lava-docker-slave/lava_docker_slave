@@ -114,6 +114,11 @@ do
     esac
 done
 
+if [ ${master::4} != "http" ]; then
+    echo "Fatal: url scheme http/https needed for -m $master"
+    exit 1
+fi
+
 http_proxy=$proxy
 url=$master
 master=${master#*://}
