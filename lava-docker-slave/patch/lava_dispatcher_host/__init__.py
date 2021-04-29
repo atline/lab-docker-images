@@ -188,16 +188,28 @@ def pass_device_into_container_docker(container, container_id, node, links=[]):
     uid = nodeinfo.st_uid
     gid = nodeinfo.st_gid
     mode = "%o" % (0o777 & nodeinfo.st_mode)
-    subprocess.call(
-        [
-            "docker",
-            "exec",
-            container,
-            "sh",
-            "-c",
-            f"mkdir -p {nodedir} && rm -f {nodedir}/* && mknod {node} {nodetype} {major} {minor} && chown {uid}:{gid} {node} && chmod {mode} {node}",
-        ]
-    )
+    if nodedir.startswith("/dev/bus/usb"):
+        subprocess.call(
+            [
+                "docker",
+                "exec",
+                container,
+                "sh",
+                "-c",
+                f"mkdir -p {nodedir} && rm -f {nodedir}/* && mknod {node} {nodetype} {major} {minor} && chown {uid}:{gid} {node} && chmod {mode} {node}",
+            ]
+        )
+    else:
+        subprocess.call(
+            [
+                "docker",
+                "exec",
+                container,
+                "sh",
+                "-c",
+                f"mkdir -p {nodedir} && mknod {node} {nodetype} {major} {minor} && chown {uid}:{gid} {node} && chmod {mode} {node}",
+            ]
+        )
 
     for link in links:
         subprocess.call(
