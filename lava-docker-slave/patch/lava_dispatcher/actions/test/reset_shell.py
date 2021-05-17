@@ -532,6 +532,9 @@ class ResetTestShellOverlayAction(Action):
                                 "Set current case as fail as soft reboot failure: %s"
                                 % (cur_case_name)
                             )
+                            for per_flag in ResetTestShellOverlayAction.pre_cmd_for_non_reset_flag:
+                                connection.sendline(per_flag, delay=max(self.character_delay, 5))
+                                connection.wait()
                         else:
                             self.logger.info(
                                 "Set current case as fail after chk reset flag: %s"
