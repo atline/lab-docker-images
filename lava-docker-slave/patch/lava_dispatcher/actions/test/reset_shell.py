@@ -496,7 +496,8 @@ class ResetTestShellOverlayAction(Action):
                             while cnt < 180:
                                 cnt += 1
                                 index = test_connection.expect(
-                                    [r".*FLAG=(\d+)", pexpect.EOF, pexpect.TIMEOUT], timeout=1
+                                    [r".*FLAG=(\d+)", pexpect.EOF, pexpect.TIMEOUT],
+                                    timeout=1,
                                 )
                                 if index == 0:
                                     chk_ret_code = int(test_connection.match.group(1))
@@ -549,8 +550,12 @@ class ResetTestShellOverlayAction(Action):
                             ResetTestShellOverlayAction.cur_case[cur_case_suite][0]
                         ] = "fail"
 
-                    for per_flag in ResetTestShellOverlayAction.pre_cmd_for_non_reset_flag:
-                        connection.sendline(per_flag, delay=max(self.character_delay, 5))
+                    for (
+                        per_flag
+                    ) in ResetTestShellOverlayAction.pre_cmd_for_non_reset_flag:
+                        connection.sendline(
+                            per_flag, delay=max(self.character_delay, 5)
+                        )
                         connection.wait()
 
         for (
@@ -908,9 +913,7 @@ class ResetTestShellAction(TestShellAction):
 
                     if case_timeout != -1:
                         ResetTestShellAction.case_timer = threading.Timer(
-                            case_timeout,
-                            self.case_timeout_handler,
-                            [params[0]],
+                            case_timeout, self.case_timeout_handler, [params[0]],
                         )
                         ResetTestShellAction.case_timer.start()
 
@@ -936,7 +939,14 @@ class ResetTestShellAction(TestShellAction):
 
             elif name == "TESTCASE":
                 if ResetTestShellOverlayAction.enable_result_event:
-                    self.logger.event(json.dumps({"suite":self.definition, "case":params[0].replace("TEST_CASE_ID=", "")}))
+                    self.logger.event(
+                        json.dumps(
+                            {
+                                "suite": self.definition,
+                                "case": params[0].replace("TEST_CASE_ID=", ""),
+                            }
+                        )
+                    )
 
         elif event == "exit":
             if self.current_run is not None:
