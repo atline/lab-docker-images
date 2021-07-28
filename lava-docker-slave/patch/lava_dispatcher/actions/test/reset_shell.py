@@ -110,7 +110,7 @@ class ShellLoopAction(Action):
         self.sleep = 1
 
     def validate(self):
-        self.logger.info("Reset shell introduced.")
+        self.logger.info("Reset shell introduced: v1.1.0")
         super().validate()
         if not self.pipeline:
             raise LAVABug(
