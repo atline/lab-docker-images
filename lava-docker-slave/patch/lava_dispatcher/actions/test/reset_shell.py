@@ -30,6 +30,7 @@ import threading
 import signal
 import datetime
 import pexpect
+import json
 
 from lava_dispatcher.action import Pipeline
 from lava_dispatcher.logical import LavaTest
@@ -253,6 +254,11 @@ class TestShellLoop(ShellLoopAction):
                 "reset_shell_para"
             ]["unexpected_exception_retry"]
 
+        if "enable_result_event" in parameters["reset_shell_para"]:
+            ResetTestShellOverlayAction.enable_result_event = parameters[
+                "reset_shell_para"
+            ]["enable_result_event"]
+
 
 class InjectBoot(LAVAError):
     """ Indicate to inject boot """
@@ -416,6 +422,7 @@ class ResetTestShellOverlayAction(Action):
     pre_cmd_for_non_reset_flag = []
     pre_cmd_for_reset_flag = []
     unexpected_exception_retry = 2
+    enable_result_event = False
 
     def run(self, connection, max_end_time):
         running = self.parameters["stage"]
@@ -926,6 +933,10 @@ class ResetTestShellAction(TestShellAction):
                             ).seconds,
                         )
                     )
+
+            elif name == "TESTCASE":
+                if ResetTestShellOverlayAction.enable_result_event:
+                    self.logger.event(json.dumps({"suite":self.definition, "case":params[0].replace("TEST_CASE_ID=", "")}))
 
         elif event == "exit":
             if self.current_run is not None:
